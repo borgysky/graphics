@@ -55,4 +55,75 @@ c, d = rotate(c1,d1,c2,d2,angle)
 plt.plot(x,y, color = 'r')
 plt.plot(a,b, color = 'g')
 plt.plot(c,d, color = 'b')
+
+a = length
+fig = plt.figure()
+
+xc = np.array([0, 0, a, a, 0, 0, a, a])
+yc = np.array([0, a, a, 0, 0, a, a, 0])
+zc = np.array([0, 0, 0, 0, a, a, a, a])
+
+cube = [[0 for j in range(3)] for i in range(8)]
+for i in range(0,8):
+    cube[i] = [xc[i], yc[i], zc[i]]
+
+def move_cube(cube, coeff):
+    mCube = [[0 for j in range(3)] for i in range(8)]
+    for i in range(0,8):
+        mCube[i][0] = cube[i][0] + coeff
+        mCube[i][1] = cube[i][1] + coeff
+        mCube[i][2] = cube[i][2] + coeff
+    return mCube
+
+def scale_cube(cube, coeff):
+    sCube = [[0 for j in range(3)] for i in range(8)]
+    for i in range(0,8):
+        sCube[i][0] = cube[i][0] * coeff
+        sCube[i][1] = cube[i][1] * coeff
+        sCube[i][2] = cube[i][2] * coeff
+    return sCube
+
+def rotate_cube_Z(cube, angle):
+    rZCube = [[0 for j in range(3)] for i in range(8)]
+    for i in range(0, 8):
+        rZCube[i][0] = cube[i][0] * np.cos(angle) + cube[i][1] * np.sin(angle)
+        rZCube[i][1] = cube[i][1] * np.cos(angle) - cube[i][0] * np.sin(angle)
+        rZCube[i][2] = cube[i][2]
+    return rZCube
+
+def rotate_cube_Y(cube, angle):
+    rYCube = [[0 for j in range(3)] for i in range(8)]
+    for i in range(0, 8):
+        rYCube[i][0] = cube[i][0] * np.cos(angle) - cube[i][2] * np.sin(angle)
+        rYCube[i][1] = cube[i][1]
+        rYCube[i][2] = cube[i][0] * np.sin(angle) + cube[i][2] * np.cos(angle)
+    return rYCube
+
+def rotate_cube_X(cube, angle):
+    rXCube = [[0 for j in range(3)] for i in range(8)]
+    for i in range(0, 8):
+        rXCube[i][0] = cube[i][0]
+        rXCube[i][1] = cube[i][1] * np.cos(angle) + cube[i][2] * np.sin(angle)
+        rXCube[i][2] = cube[i][2] * np.cos(angle) - cube[i][1] * np.sin(angle)
+    return rXCube
+
+axes = fig.add_subplot(projection='3d')
+
+axes.set_xlabel('X')
+axes.set_ylabel('Y')
+axes.set_zlabel('Z')
+
+def draw_cube(cube, color):
+    for i in range(0,4):
+        for j in range(0, 2):
+            plt.plot([cube[i + j * 4][0], cube[(i + 1)%4 + j * 4][0]], [cube[i + j * 4][1], cube[(i + 1)%4 + j * 4][1]], [cube[j * 4 + i][2], cube[j * 4 + (i+1)%4][2]], color)
+        plt.plot([cube[i][0], cube[i+4][0]], [cube[i][1], cube[i+4][1]], [cube[i][2], cube[i+4][2]], color)
+
+draw_cube(cube, 'k')
+draw_cube(move_cube(cube, move_coeff), 'y')
+draw_cube(scale_cube(cube, scale_coeff), 'purple')
+draw_cube(rotate_cube_Z(cube, angle), 'b')
+draw_cube(rotate_cube_Y(cube, angle), 'g')
+draw_cube(rotate_cube_X(cube, angle), 'r')
+
 plt.show()
