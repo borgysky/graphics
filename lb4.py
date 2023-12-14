@@ -13,8 +13,14 @@ y = np.array([[0.20594921458139848, 0.69867490746766384, 6.02502663713475161], [
 
 x = np.array([[7, 17, 19, 11, 9], [18, 13, 19, 17, 20], [16, 20, 17, 7, 10], [3, 8, 10, 7, 9], [12, 2, 4, 1, 14], [2, 12, 15, 6, 5], [14, 1, 11, 19, 13], [1, 4, 3, 9, 11], [2, 5, 8, 3, 4],
              [5, 6, 16, 10, 8], [12, 14, 13, 18, 15], [6, 15, 18, 20, 16]])
-axes.set_xlim([-10, 10])
-axes.set_ylim([-10, 10])
+
+yt = np.array([[0.71984513427131856, 2.2298380570634402], [3.04305725718582476, 2.2298380570634402], [-0.44176092718593464, 4.24179880999851556],
+               [-0.44176092718593464,0.2178773041283648]])
+
+xt = np.array([[1,2,3], [2,4,3], [1,3,4], [1,4,2]])
+
+axes.set_xlim([-10,10])
+axes.set_ylim([-10,10])
 
 def drawdodek(edges, vertices):
     for edge in edges:
@@ -22,5 +28,15 @@ def drawdodek(edges, vertices):
         y = [vertices[i - 1][1] for i in edge]
         plt.plot(x + [x[0]], y + [y[0]], 'r-')
 
+def drawtetr(edges, vertices):
+    x = []
+    y = []
+    for edge in edges:
+        for i in range(3):
+            x.append(vertices[edge[i] - 1][0])
+            y.append(vertices[edge[i] - 1][1] - 8)
+    plt.plot(x, y)
+
 drawdodek(x, y)
+drawtetr(xt, yt)
 plt.show()
